@@ -340,7 +340,7 @@
             color: #334155;
         }
 
-        /* 圖片彈窗 Modal */
+        /* 圖片彈窗 Modal（支援多張圖片上下排列與捲動） */
         .modal {
             display: none;
             position: fixed;
@@ -349,36 +349,47 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(15, 23, 42, 0.85);
+            background-color: rgba(15, 23, 42, 0.88);
             backdrop-filter: blur(5px);
+            overflow-y: auto;
+            padding: 64px 16px 32px;
+        }
+
+        .modal-images-wrapper {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
+            gap: 16px;
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
         }
 
         .modal-content {
-            max-width: 90%;
-            max-height: 80%;
+            width: 100%;
+            height: auto;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
             object-fit: contain;
         }
 
         .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+            position: fixed;
+            top: 16px;
+            right: 16px;
             color: #ffffff;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
-            background: rgba(0,0,0,0.3);
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             width: 40px;
             height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 2001;
         }
 
         .qrcode-section { 
@@ -581,7 +592,7 @@
             <i class="fa-solid fa-arrow-up-right-from-square arrow-icon" style="color: #d97706;"></i>
         </a>
 
-       <!-- 四個並排按鈕區塊 -->
+        <!-- 四個並排按鈕區塊 -->
         <div class="nav-grid">           
             <a href="https://www.google.com/maps/search/?api=1&query=高雄市苓雅區新光路38號" target="_blank" class="nav-card">
                 <i class="fa-solid fa-location-dot nav-icon"></i>
@@ -595,7 +606,7 @@
                 <i class="fa-solid fa-square-parking nav-icon"></i>
                 <span class="nav-label">高雄總公司<br>停車資訊</span>
             </a>
-            <div class="nav-card" onclick="openModal('elevator.jpg', 'floor30.jpg')">
+            <div class="nav-card" onclick="openModal('https://shift101260.github.io/FAN-CHING-YUN/elevator.jpg', 'https://shift101260.github.io/FAN-CHING-YUN/floor30.jpg')">
                 <i class="fa-solid fa-elevator nav-icon"></i>
                 <span class="nav-label">高雄總公司<br>辦公室導覽</span>
             </div>
@@ -607,7 +618,7 @@
         <img id="qrcode-img" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.yuanyeh.com.tw" alt="QR Code">
         
         <div class="url-copy-box">
-            <span class="url-text" id="card-url-text">https://card.ruili.com/cbo</span>
+            <span class="url-text" id="card-url-text">https://card.ruili.com/cfo</span>
             <button class="url-copy-btn" onclick="copyCardUrl()">
                 <i class="fa-regular fa-copy"></i> 複製網址
             </button>
@@ -632,60 +643,4 @@
         const arrow = document.getElementById('accordion-arrow');
         content.classList.toggle('open');
         
-        if (content.classList.contains('open')) {
-            arrow.style.transform = 'rotate(180deg)';
-        } else {
-            arrow.style.transform = 'rotate(0deg)';
-        }
-    }
-
-    function copyText(text, message) {
-        navigator.clipboard.writeText(text).then(() => {
-            showToast(message);
-        }).catch(err => {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand("copy");
-            document.body.removeChild(textArea);
-            showToast(message);
-        });
-    }
-
-    function copyCardUrl() {
-        const currentUrl = window.location.href;
-        copyText(currentUrl, '名片網址已複製！');
-    }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.innerText = msg;
-        toast.classList.add('show');
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 2000);
-    }
-
-    function openModal(imgSrc) {
-        const modal = document.getElementById('imageModal');
-        const modalImg = document.getElementById('modalImg');
-        modal.style.display = "flex";
-        modalImg.src = imgSrc;
-    }
-
-    function closeModal() {
-        document.getElementById('imageModal').style.display = "none";
-    }
-
-    window.onload = function() {
-        var currentUrl = window.location.href;
-        if(currentUrl.startsWith('http')) {
-            document.getElementById('qrcode-img').src = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + encodeURIComponent(currentUrl);
-            document.getElementById('card-url-text').innerText = currentUrl;
-        }
-    }
-</script>
-
-</body>
-</html>
+        if (content
